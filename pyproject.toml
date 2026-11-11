@@ -1,0 +1,28 @@
+[project]
+name = "pasca"
+version = "0.1.0"
+description = "Extract a writing system from sample texts"
+readme = "README.md"
+authors = [
+    { name = "Hanz", email = "hi@hanz.dev" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "glfw>=2.11.0",
+    "imgui-bundle>=1.93.0",
+    "openai>=3.49.0",
+    "pypdf>=7.0.1",
+    "python-docx>=1.2.0",
+]
+
+[project.scripts]
+pasca = "pasca:main"
+
+[build-system]
+requires = ["uv_build>=0.13.1,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
