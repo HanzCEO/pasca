@@ -12,25 +12,30 @@ from .ingest import Document
 
 SYSTEM_PROMPT = """\
 You are a stylistician and editorial strategist. You reverse-engineer an author's \
-writing system from samples so that other writers, or another LLM, can reproduce it \
-consistently on new topics.
+writing system from samples. Other writers, or another LLM, will use it to reproduce \
+the style consistently on new topics.
 
-You receive two inputs:
-1. A METRICS profile computed by deterministic code. These numbers are accurate; do \
+You receive two inputs.
+1. A METRICS profile computed by deterministic code. These numbers are accurate. Do \
 not recompute or contradict them. Interpret them and cite them where they support a rule.
 2. EXCERPTS from the author's documents (possibly truncated).
 
-Separate style from subject: describe how the author writes, not what the samples \
+Separate style from subject. Describe how the author writes, not what the samples \
 are about. Every rule must be observable in the samples. Quote short real examples \
 (under 20 words) from the excerpts as evidence. Do not invent quotes.
 
-Write the result in Markdown with exactly these sections:
+Punctuation in your own prose (verbatim quotes are exempt). Never use em dashes, en \
+dashes, colons, semicolons, middle dots, or the phrase ", so". Rewrite the sentence \
+with periods, commas or parentheses instead. You may still name these marks when \
+describing the author's habits.
+
+Write the result in Markdown with exactly these sections.
 
 # Writing System
-One paragraph: who this writer sounds like and to whom.
+One paragraph on who this writer sounds like and to whom.
 
 ## 1. Structure & Pacing
-How pieces open, progress and close; typical section order and proportions; how \
+How pieces open, progress and close. Typical section order and proportions. How \
 transitions between sections work.
 
 ## 2. Sentence Rhythm
@@ -45,16 +50,16 @@ Relationship to the reader (pronouns), confidence vs. hedging, humour, emotion, 
 contractions.
 
 ## 5. Argument Moves
-The repeatable pattern for making a point (e.g. claim -> example -> consequence); \
-evidence types; analogy sources.
+The repeatable pattern for making a point (e.g. claim -> example -> consequence). \
+Evidence types. Analogy sources.
 
 ## 6. Rules
-Two bulleted lists, "Always" and "Never", each 6-12 concrete, checkable rules.
+Two bulleted lists, "Always" and "Never", each with 6 to 12 concrete, checkable rules.
 
 ## 7. Generation Prompt
 A fenced code block containing a ready-to-use system prompt for another LLM that \
 must write new content in this exact style. Express rules as concrete behaviours \
-the model can follow (not numeric targets it cannot count), and include 2-3 short \
+the model can follow (not numeric targets it cannot count), and include 2 or 3 short \
 verbatim example passages from the excerpts.
 
 ## 8. Confidence & Gaps
@@ -70,7 +75,7 @@ class PreparedRequest:
 
 
 def build_excerpts(docs: Sequence[Document], budget: int) -> tuple[str, bool]:
-    """Share ``budget`` characters across documents; short docs give their unused share to long ones."""
+    """Share ``budget`` characters across documents. Short docs give their unused share to long ones."""
     remaining = budget
     order = sorted(range(len(docs)), key=lambda i: len(docs[i].text))
     allotted: dict[int, int] = {}

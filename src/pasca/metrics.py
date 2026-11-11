@@ -1,6 +1,6 @@
 """Deterministic style metrics computed locally (no LLM).
 
-LLMs cannot count reliably, so the numbers the model interprets come from here.
+LLMs cannot count reliably. The numbers the model interprets come from here.
 Rates are normalised per 1,000 words so corpora of different sizes compare.
 """
 

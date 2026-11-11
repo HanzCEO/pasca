@@ -29,7 +29,7 @@ class Document:
 def read_text(path: Path) -> str:
     suffix = path.suffix.lower()
     if suffix not in SUPPORTED_EXTENSIONS:
-        raise IngestError(f"Unsupported file type '{suffix or path.name}'. Use: {', '.join(SUPPORTED_EXTENSIONS)}")
+        raise IngestError(f"Unsupported file type '{suffix or path.name}'. Supported types are {', '.join(SUPPORTED_EXTENSIONS)}")
     try:
         if suffix == ".docx":
             return _read_docx(path)
@@ -39,13 +39,13 @@ def read_text(path: Path) -> str:
     except IngestError:
         raise
     except Exception as exc:  # parsing libraries raise many different types
-        raise IngestError(f"Could not read {path.name}: {exc}") from exc
+        raise IngestError(f"Could not read {path.name} ({exc})") from exc
 
 
 def load_document(path: str | Path) -> Document:
     p = Path(path)
     if not p.is_file():
-        raise IngestError(f"Not a file: {p}")
+        raise IngestError(f"Not a file ({p})")
     text = read_text(p).strip()
     if not text:
         raise IngestError(f"{p.name} contains no readable text")
